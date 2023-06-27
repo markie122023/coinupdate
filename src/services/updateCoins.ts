@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BASE_URL, BINANCE_URL, DTUNES_TOKEN } from "./config";
 import { generateToken } from "../helphers/auth";
+import { sentry } from "../helphers/sentry.errorhandler";
 
 export const updateCoin = async ()=>{
     try {
@@ -9,7 +10,8 @@ export const updateCoin = async ()=>{
         let resp2 = await axios.put(BINANCE_URL + '/v2/crypto-admin/coin-records', resp.data);
         console.log(resp2.data);
         return;
-      } catch (error) {
+      } catch (error) {  
+      sentry.captureException(error);
           console.log(error);
       }
 }
@@ -35,6 +37,7 @@ export const updateNairaRates = async (generatedToken: string = '')=>{
       }
     
     } catch (error) {
+      sentry.captureException(error);
         console.log(error);
     }
 }
