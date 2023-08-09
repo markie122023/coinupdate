@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_URL, BINANCE_URL, DTUNES_TOKEN } from "./config";
 import { generateToken } from "../helphers/auth";
 import { sentry } from "../helphers/sentry.errorhandler";
+import { getToken } from "../helphers/nedb.helpher";
 
 export const updateCoin = async ()=>{
     try {
@@ -22,7 +23,8 @@ export const updateNairaRates = async (generatedToken: string = '')=>{
         console.log(resp.data);
       const data =  {key:'usdt-niara-rate', value: resp.data[0].lastPrice };
       console.log('uploaded data here',data);
-      const token = generatedToken || DTUNES_TOKEN;
+      const redisToken = await getToken();
+      const token = generatedToken || redisToken;
       console.log('token :', token);
       try {
         const resp2 = await axios.put(BASE_URL + '/v1/preferences/settings',data, {
@@ -37,7 +39,8 @@ export const updateNairaRates = async (generatedToken: string = '')=>{
       }
     
     } catch (error) {
-      sentry.captureException(error);
-        console.log(error);
+      console.log(error);
+     // sentry.captureException(error);
+       
     }
 }
