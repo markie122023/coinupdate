@@ -20,7 +20,7 @@ export const updateCoin = async ()=>{
 export const updateNairaRates = async (generatedToken: string = '')=>{
     try {
         const resp = await  axios.get(BINANCE_URL + '/api/v3/ticker/24hr?symbols=["USDTNGN"]');
-        console.log(resp.data);
+       // console.log(resp.data);
       const data =  {key:'usdt-niara-rate', value: resp.data[0].lastPrice };
       console.log('uploaded data here',data);
       const redisToken = await getToken();
@@ -33,7 +33,7 @@ export const updateNairaRates = async (generatedToken: string = '')=>{
         } );
         console.log('final code', resp2.data);
       } catch (error) {
-        console.log(error);
+        console.log('the error here is a token error');
        let token = await generateToken();
       await updateNairaRates(token);
       }
