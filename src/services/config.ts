@@ -1,1 +1,1 @@
-export const { BASE_URL, BINANCE_URL, DTUNES_TOKEN, DTUNES_PASSWORD, DTUNES_USER} = process.env;
+export const { BASE_URL, BINANCE_URL, DTUNES_PASSWORD, DTUNES_USER} = process.env;

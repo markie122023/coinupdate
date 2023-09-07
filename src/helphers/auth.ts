@@ -8,7 +8,6 @@ export async function generateToken(): Promise<string>{
     console.log(data.message)
     if(data.message == 'Login successful'){
      await setToken(data.data.token)
-      //process.env.DTUNES_TOKEN = data.data.token;
       return data.data.token;
     }
     else{

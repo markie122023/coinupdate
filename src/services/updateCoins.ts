@@ -1,8 +1,13 @@
 import axios from "axios";
-import { BASE_URL, BINANCE_URL, DTUNES_TOKEN } from "./config";
+import { BASE_URL, BINANCE_URL } from "./config";
 import { generateToken } from "../helphers/auth";
 import { sentry } from "../helphers/sentry.errorhandler";
 import { getToken } from "../helphers/nedb.helpher";
+import {ScrapperHelpher } from "../helphers/scraper.helpher";
+import { SlackHelpher } from "../helphers/slack.helpher";
+import { SlackChannels } from "../Models/slack.models";
+
+const scraper = new ScrapperHelpher();
 
 export const updateCoin = async ()=>{
     try {
@@ -21,13 +26,15 @@ export const updateNairaRates = async (generatedToken: string = '')=>{
     try {
         const resp = await  axios.get(BINANCE_URL + '/api/v3/ticker/24hr?symbols=["USDTNGN"]');
        // console.log(resp.data);
-      const data =  {key:'usdt-niara-rate', value: resp.data[0].lastPrice };
+       const scrapedData = await scraper.scrapeJSWebsiteByClassName();
+       console.log("the scrapedData", scrapedData);
+      const data =  {p2p: scrapedData, official: resp.data[0].lastPrice };
       console.log('uploaded data here',data);
       const redisToken = await getToken();
       const token = generatedToken || redisToken;
       console.log('token :', token);
       try {
-        const resp2 = await axios.put(BASE_URL + '/v1/preferences/settings',data, {
+        const resp2 = await axios.put(BASE_URL + '/v1/preferences/settings/dollar-rate',data, {
           headers: {Authorization: 'Bearer ' + token}
           
         } );
@@ -41,6 +48,12 @@ export const updateNairaRates = async (generatedToken: string = '')=>{
     } catch (error) {
       console.log(error);
      // sentry.captureException(error);
+     const slack = new SlackHelpher();
+      slack.sendChat({
+        channel: SlackChannels.Crypto,
+        text: "the last attempt to update usd rate failed",
+
+      })
        
     }
 }
