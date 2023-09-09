@@ -17,7 +17,7 @@ export const updateCoin = async ()=>{
         console.log(resp2.data);
         return;
       } catch (error) {  
-      sentry.captureException(error);
+      //sentry.captureException(error);
           console.log(error);
       }
 }

@@ -9,8 +9,9 @@
     "redis": "^4.6.7"
   },
   "scripts": {
+    "start": "dist/app.js",
     "dev": "ts-node-dev src/app.ts",
-    "dev-build": "tsc"
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/jest": "^29.5.4",
