@@ -13,7 +13,7 @@ export const updateCoin = async ()=>{
     try {
         const resp = await  axios.get(BINANCE_URL + '/api/v3/ticker/24hr?symbols=["XRPUSDT","USDCUSDT","USDTNGN"]');
         console.log(resp.data);
-        let resp2 = await axios.put(BINANCE_URL + '/v2/crypto-admin/coin-records', resp.data);
+        let resp2 = await axios.put(BASE_URL + '/v2/crypto-admin/coin-records', resp.data);
         console.log(resp2.data);
         return;
       } catch (error) {  
