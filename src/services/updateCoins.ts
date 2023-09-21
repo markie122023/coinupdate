@@ -26,8 +26,9 @@ export const updateNairaRates = async (generatedToken: string = '')=>{
     try {
         const resp = await  axios.get(BINANCE_URL + '/api/v3/ticker/24hr?symbols=["USDTNGN"]');
        // console.log(resp.data);
-       const scrapedData = await scraper.scrapeJSWebsiteByClassName();
+       let scrapedData = await scraper.scrapeJSWebsiteByClassName();
        console.log("the scrapedData", scrapedData);
+       scrapedData = Number(scrapedData.toFixed(2));
       const data =  {p2p: scrapedData, official: resp.data[0].lastPrice };
       console.log('uploaded data here',data);
       const redisToken = await getToken();
