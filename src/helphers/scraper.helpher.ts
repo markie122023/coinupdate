@@ -26,7 +26,7 @@ export class ScrapperHelpher {
     const page = await browser.newPage();
     try {
 
-     
+
       page.waitForTimeout(100000);
 
       await page.goto(url);
@@ -54,10 +54,16 @@ export class ScrapperHelpher {
       const firstFiveNumbers = price.slice(0, 5);
 
       // Convert the string numbers to floats and calculate their sum
-      const sum = firstFiveNumbers.reduce((acc: number, numStr: string) =>{
+      const sum = firstFiveNumbers.reduce((acc: number, numStr: string) => {
         const numericValue = parseFloat(numStr.replace(/,/g, ''));
-       return acc + numericValue;
-      });
+        if (!isNaN(numericValue)) {
+          return acc + numericValue;
+        } else {
+          console.warn(`Unable to parse ${numStr} as a valid number.`);
+          return acc; // Skip this value and continue with the sum
+        }
+      }, 0);
+
 
       // Calculate the average
       const average = sum / firstFiveNumbers.length;
@@ -74,7 +80,7 @@ export class ScrapperHelpher {
       console.error('Error:', error);
       Sentry.captureException(error);
       throw error;
-    } 
+    }
   }
 }
 
