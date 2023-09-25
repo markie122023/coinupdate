@@ -54,7 +54,10 @@ export class ScrapperHelpher {
       const firstFiveNumbers = price.slice(0, 5);
 
       // Convert the string numbers to floats and calculate their sum
-      const sum = firstFiveNumbers.reduce((acc: number, numStr: string) => acc + parseFloat(numStr), 0);
+      const sum = firstFiveNumbers.reduce((acc: number, numStr: string) =>{
+        const numericValue = parseFloat(numStr.replace(/,/g, ''));
+       return acc + numericValue;
+      });
 
       // Calculate the average
       const average = sum / firstFiveNumbers.length;
