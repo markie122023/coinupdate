@@ -9,7 +9,7 @@
     "redis": "^4.6.7"
   },
   "scripts": {
-    "start": "dist/app.js",
+    "start": "node dist/app.js",
     "dev": "ts-node-dev src/app.ts",
     "build": "tsc"
   },
